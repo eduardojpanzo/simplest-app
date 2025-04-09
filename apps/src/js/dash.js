@@ -39,12 +39,16 @@ function isModalOpen() {
 }
 
 function setMenuItems() {
-  document.querySelector(".menu-items").innerHTML = "";
-  sideBarMenuItems.map((item) => {
+  document.querySelector(".menu-items").innerHTML = `
+   <li class="item" onclick="mountInitialDashContent()">
+      <i class="fas fa-home"></i>
+      <span>Painel</span>
+    </li>`;
+  categoryData.map((item) => {
     document.querySelector(".menu-items").innerHTML += `
         <li class="item" onclick="${item.goTo}">
-            <i class="${item.iconClass}"></i>
-            <span>${item.value}</span>
+            ${item.icon}
+            <span>${item.name}</span>
         </li>
     `;
   });
@@ -56,39 +60,64 @@ function mountSideBar() {
   setMenuItems();
 }
 
+function mountInitialDashContent() {
+  selectMenuItem(0);
+
+  document.querySelector(".main-content .content").innerHTML = ``;
+}
+
 function mountTableBody(bodydata) {
-  document.querySelector(".table tbody").innerHTML = "";
+  document.querySelector(".main-content .content").innerHTML = `
+   <div class="filter-input">
+      <i class="fas fa-search"></i>
+      <input type="search" name="search" id="search" placeholder="Search" />
+
+      <select name="type" id="type">
+        <option value="last">Last Upload</option>
+        <option value="firt">Firt Upload</option>
+        <option value="name">Name</option>
+        <option value="Size">Size</option>
+      </select>
+    </div>
+
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Upload At</th>
+            <th>Kind</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+      </table>
+    </div>
+  `;
 
   bodydata.map((item) => {
     document.querySelector(".table tbody").innerHTML += `
-        <tr  data-key="${item.key}">
+        <tr  data-key="${item.id}">
             <td>${item.name}</td>
-            <td>${item.uploadAt}</td>
             <td>${item.ext}</td>
             <td>${item.size}</td>
+            <td>${item.uploadAt}</td>
         </tr>
     `;
   });
 }
 
 function handleMountBodyData(number) {
-  const bodydata = {
-    1: tableBodyDataRecent,
-    2: tableBodyDataImages,
-    3: tableBodyDataVideo,
-    4: tableBodyDataAudio,
-    5: tableBodyDataOthers,
-  };
-
   selectMenuItem(number);
-  mountTableBody(bodydata[number]);
+  mountTableBody(tableBodyData.filter((item) => item.categoryId === number));
 }
 
 function selectMenuItem(number) {
   const items = document.querySelectorAll(".menu-items .item");
   items.forEach((item, i) => {
     item.classList.remove("active");
-    if (i === number - 1) {
+    if (i === number) {
       item.classList.add("active");
     }
   });
@@ -96,8 +125,7 @@ function selectMenuItem(number) {
 
 function initialDash() {
   mountSideBar();
-  selectMenuItem(1);
-  mountTableBody(tableBodyDataRecent);
+  mountInitialDashContent();
 }
 
 initialDash();
