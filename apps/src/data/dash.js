@@ -21,6 +21,28 @@ const toggleThemeInner = `
   </div>
 `;
 
+const uploadFormModalInner = `
+  <form>
+    <div class="control-form">
+      <label for="fileType">Selecione o tipo de arquivo:</label>
+      <select id="fileType">
+          <option value="image">Imagem</option>
+          <option value="video">Vídeo</option>
+          <option value="document">Documento</option>
+      </select>
+    </div>
+
+    <div class="control-form">
+      <label for="fileInput">Selecione um arquivo:</label>
+      <input type="file" id="fileInput">
+    </div>
+
+    <div class="control-form">
+      <button type="submit">Guardar</button>
+    </div>
+  </form>
+`;
+
 const categoryData = [
   {
     id: 1,

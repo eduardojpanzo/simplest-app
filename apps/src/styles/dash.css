@@ -231,3 +231,18 @@ tbody td:last-child {
   font-size: x-large;
   cursor: pointer;
 }
+
+/* Form upload */
+.control-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.control-form button {
+  font-size: larger;
+  font-weight: bold;
+  background-color: var(--blue-600);
+  color: white;
+}

@@ -24,9 +24,7 @@ function getResumeData() {
   return result;
 }
 function createNewUpload() {
-  modalOverlay.querySelector(".modal-content").innerHTML = `
-    Criar New upload!
-  `;
+  modalOverlay.querySelector(".modal-content").innerHTML = uploadFormModalInner;
 
   openModal();
 }
