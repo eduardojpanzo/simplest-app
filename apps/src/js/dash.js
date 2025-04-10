@@ -29,6 +29,82 @@ function createNewUpload() {
   openModal();
 }
 
+function handleDefineTypeFile(event) {
+  const fileInput = document.querySelector(".form-upload #fileInput");
+  const selectedType = event.target.value;
+
+  const acceptMap = {
+    image: "image/*",
+    video: "video/*",
+    audio: "audio/*",
+    document: ".pdf,.doc,.docx,.txt",
+  };
+
+  fileInput.accept = acceptMap[selectedType];
+}
+
+function handleUploadFile(event) {
+  event.preventDefault();
+  const fileType = event.target.fileType.value;
+  const fileInput = event.target.fileInput;
+
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Selecione um arquivo primeiro.");
+    return;
+  }
+
+  const category =
+    categoryData.find((cat) => cat.slug === fileType) ||
+    categoryData.find((cat) => cat.id === 5);
+
+  const sizeInKB = Math.round(file.size / 1024) + " KB";
+  const ext = getReadableType(file);
+  const today = new Date().toLocaleDateString("en-GB"); // formato dd-mm-yyyy
+
+  const upload = {
+    id: (tableBodyData[tableBodyData.length - 1]?.id || 0) + 1,
+    name: file.name.split(".")[0],
+    ext: ext,
+    size: sizeInKB,
+    uploadAt: today,
+    categoryId: category.id,
+  };
+
+  tableBodyData.push(upload);
+  setDataToLocalStorage("tableBodyData", tableBodyData);
+  closeModal();
+  mountInitialDashContent();
+}
+
+function getReadableType(file) {
+  const typeMap = {
+    "image/png": "PNG image",
+    "image/jpeg": "JPEG image",
+    "image/gif": "GIF image",
+    "application/pdf": "PDF document",
+    "application/msword": "Word document",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      "Word (OpenXML)",
+    "text/plain": "Text file",
+    "audio/mpeg": "MP3 audio",
+    "audio/wav": "WAV audio",
+    "audio/ogg": "OGG audio",
+    "video/mp4": "MP4 video",
+    "video/webm": "WEBM video",
+    "video/ogg": "OGG video",
+  };
+  return typeMap[file.type] || file.type || "Unknown";
+}
+
+function setDataToLocalStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function getDataFromLocalStorage(key) {
+  return JSON.parse(localStorage.getItem(key));
+}
 function handleGoToOwnerSite() {
   window.open("https://eduardojpanzo.vercel.app", "_blank");
 }
@@ -152,6 +228,7 @@ function selectMenuItem(number) {
 }
 
 function initialDash() {
+  tableBodyData = getDataFromLocalStorage("tableBodyData");
   mountSideBar();
   mountInitialDashContent();
 }

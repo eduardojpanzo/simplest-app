@@ -22,13 +22,15 @@ const toggleThemeInner = `
 `;
 
 const uploadFormModalInner = `
-  <form>
+  <form class="form-upload" onsubmit="handleUploadFile(event)">
     <div class="control-form">
       <label for="fileType">Selecione o tipo de arquivo:</label>
-      <select id="fileType">
-          <option value="image">Imagem</option>
-          <option value="video">Vídeo</option>
-          <option value="document">Documento</option>
+      <select id="fileType" onchange="handleDefineTypeFile(event)">
+        <option selected disabled value="">Selecione um tipo</option>
+        <option value="image">Imagem</option>
+        <option value="document">Documento</option>
+        <option value="audio">Audio</option>
+        <option value="video">Vídeo</option>
       </select>
     </div>
 
@@ -47,36 +49,41 @@ const categoryData = [
   {
     id: 1,
     name: "Images",
+    slug: "image",
     icon: `<i class="fas fa-images"></i>`,
     goTo: "handleMountBodyData(1)",
   },
   {
     id: 2,
     name: "Documents",
+    slug: "document",
     icon: `<i class="fas fa-file-alt"></i>`,
     goTo: "handleMountBodyData(2)",
   },
   {
     id: 3,
     name: "Audio",
+    slug: "audio",
     icon: `<i class="fas fa-music"></i>`,
     goTo: "handleMountBodyData(3)",
   },
   {
     id: 4,
     name: "Video",
+    slug: "video",
     icon: `<i class="fas fa-video"></i>`,
     goTo: "handleMountBodyData(4)",
   },
   {
     id: 5,
     name: "Others",
+    slug: "",
     icon: `<i class="fas fa-file"></i>`,
     goTo: "handleMountBodyData(5)",
   },
 ];
 
-const tableBodyData = [
+let tableBodyData = [
   {
     id: 1,
     name: "city",
