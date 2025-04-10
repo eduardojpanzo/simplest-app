@@ -43,10 +43,10 @@ body {
   border: 1px solid var(--gray-300);
   color: var(--text-secondary);
 }
-.user-content:hover .user-edit {
+.user-content:hover .user-link {
   opacity: 1;
 }
-.user-edit {
+.user-link {
   opacity: 0;
   position: absolute;
   top: 0.3rem;
@@ -119,6 +119,44 @@ body {
   flex: 1;
   max-width: calc(100% - 16rem);
   padding: 1.5rem;
+}
+
+.dash-top {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-300);
+}
+
+.dash-resume {
+  min-height: calc(100dvh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 24px;
+}
+
+.dash-resume .dash-resume-item {
+  min-width: 172px;
+  padding: 12px;
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow);
+  border-radius: 0.4rem;
+  transition: var(--tran-03);
+  text-align: center;
+}
+
+.dash-resume-item .name {
+  display: block;
+  font-size: 32px;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.dash-resume-item .value {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .filter-input {

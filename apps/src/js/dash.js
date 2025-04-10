@@ -5,7 +5,24 @@ document.addEventListener("keydown", (e) => {
     closeModal();
   }
 });
+function getResumeData() {
+  const categoryMap = new Map(categoryData.map((cat) => [cat.id, cat.name]));
+  const countMap = new Map();
 
+  for (const item of tableBodyData) {
+    const name = categoryMap.get(item.categoryId);
+    if (!name) continue;
+
+    countMap.set(name, (countMap.get(name) || 0) + 1);
+  }
+
+  const result = Array.from(countMap.entries()).map(([name, qtd]) => ({
+    name,
+    qtd,
+  }));
+
+  return result;
+}
 function createNewUpload() {
   modalOverlay.querySelector(".modal-content").innerHTML = `
     Criar New upload!
@@ -14,12 +31,8 @@ function createNewUpload() {
   openModal();
 }
 
-function handleEditUser() {
-  modalOverlay.querySelector(".modal-content").innerHTML = `
-    Edit User!
-  `;
-
-  openModal();
+function handleGoToOwnerSite() {
+  window.open("https://eduardojpanzo.vercel.app", "_blank");
 }
 
 function toggleTheme() {
@@ -63,10 +76,27 @@ function mountSideBar() {
 function mountInitialDashContent() {
   selectMenuItem(0);
 
-  document.querySelector(".main-content .content").innerHTML = ``;
+  const resume = getResumeData();
+
+  document.querySelector(".main-content .content").innerHTML = `
+   <div class="dash-top">
+      <h1>Dashboard</h1>
+        <p>Relatórios de todos os dados guardados</p>
+    </div>
+    <div class="dash-resume">
+      ${resume
+        .map(
+          (item) => `
+          <div class="dash-resume-item">
+            <strong class="name">${item.name}</strong>
+            <span class="value">${item.qtd}</span>
+          </div>`
+        )
+        .join("")}
+    </div>`;
 }
 
-function mountTableBody(bodydata) {
+function mountTable(bodydata) {
   document.querySelector(".main-content .content").innerHTML = `
    <div class="filter-input">
       <i class="fas fa-search"></i>
@@ -110,7 +140,7 @@ function mountTableBody(bodydata) {
 
 function handleMountBodyData(number) {
   selectMenuItem(number);
-  mountTableBody(tableBodyData.filter((item) => item.categoryId === number));
+  mountTable(tableBodyData.filter((item) => item.categoryId === number));
 }
 
 function selectMenuItem(number) {
